@@ -6,10 +6,13 @@ import org.cloudbus.cloudsim.cloudlets.CloudletSimple
 import org.cloudbus.cloudsim.core.CloudSim
 import org.cloudbus.cloudsim.datacenters.DatacenterSimple
 import org.cloudbus.cloudsim.hosts.HostSimple
+import org.cloudbus.cloudsim.hosts.Host
 import org.cloudbus.cloudsim.resources.{Pe, PeSimple}
+import org.cloudbus.cloudsim.schedulers.vm.VmSchedulerTimeShared
 import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelDynamic
 import org.cloudbus.cloudsim.vms.VmSimple
 import org.cloudsimplus.builders.tables.CloudletsTableBuilder
+import java.util
 
 import collection.JavaConverters.*
 
@@ -26,23 +29,35 @@ object BasicCloudSimPlusExample:
     val cloudsim = new CloudSim();
     val broker0 = new DatacenterBrokerSimple(cloudsim);
 
-    val hostPes = List(new PeSimple(config.getLong("cloudSimulator.host.mipsCapacity")))
+    val hostPes = Seq(new PeSimple(config.getLong("cloudSimulator.host.mipsCapacity")))
+    val hostPes2 = Seq(new PeSimple(config.getLong("cloudSimulator.host.mipsCapacity")))
     logger.info(s"Created one processing element: $hostPes")
 
-    val hostList = List(new HostSimple(config.getLong("cloudSimulator.host.RAMInMBs"),
+    val hostListTemp = List(new HostSimple(config.getLong("cloudSimulator.host.RAMInMBs"),
       config.getLong("cloudSimulator.host.StorageInMBs"),
       config.getLong("cloudSimulator.host.BandwidthInMBps"),
-      hostPes.asJava))
+      hostPes.asJava),
+      new HostSimple(config.getLong("cloudSimulator.host.RAMInMBs"),
+        config.getLong("cloudSimulator.host.StorageInMBs"),
+        config.getLong("cloudSimulator.host.BandwidthInMBps"),
+        hostPes2.asJava))
 
-    logger.info(s"Created one host: $hostList")
+//    logger.info(s"Created one host: $hostList")
 
-    val dc0 = new DatacenterSimple(cloudsim, hostList.asJava);
+    val a = new util.ArrayList[Host]
+    val hostList = hostListTemp.map(a.add(_))
+
+    val dc0 = new DatacenterSimple(cloudsim, a);
 
     val vmList = List(
       new VmSimple(config.getLong("cloudSimulator.vm.mipsCapacity"), hostPes.length)
       .setRam(config.getLong("cloudSimulator.vm.RAMInMBs"))
       .setBw(config.getLong("cloudSimulator.vm.BandwidthInMBps"))
-      .setSize(config.getLong("cloudSimulator.vm.StorageInMBs"))
+      .setSize(config.getLong("cloudSimulator.vm.StorageInMBs")),
+      new VmSimple(config.getLong("cloudSimulator.vm.mipsCapacity"), hostPes.length)
+        .setRam(config.getLong("cloudSimulator.vm.RAMInMBs"))
+        .setBw(config.getLong("cloudSimulator.vm.BandwidthInMBps"))
+        .setSize(config.getLong("cloudSimulator.vm.StorageInMBs"))
     )
     logger.info(s"Created one virtual machine: $vmList")
 
