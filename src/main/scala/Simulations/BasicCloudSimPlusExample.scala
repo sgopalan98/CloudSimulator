@@ -19,7 +19,7 @@ import collection.JavaConverters.*
 class BasicCloudSimPlusExample
 
 object BasicCloudSimPlusExample:
-  val config = ObtainConfigReference("cloudSimulator") match {
+  val config = ObtainConfigReference("cloudSimulator", "application") match {
     case Some(value) => value
     case None => throw new RuntimeException("Cannot obtain a reference to the config data.")
   }
