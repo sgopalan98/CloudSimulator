@@ -3,13 +3,14 @@ import Simulations.{BasicCloudSimPlusExample, PaaSSimulation}
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 import Simulations.SaaS.SmallApplicationSaaS
+import Simulations.IaaS._
 
 object Simulation:
   val logger = CreateLogger(classOf[Simulation])
 
   @main def runSimulation =
     logger.info("Constructing a cloud model...")
-    SmallApplicationSaaS.Start(3)
+    new IaaSExample1().Start()
     logger.info("Finished cloud simulation...")
 
 class Simulation

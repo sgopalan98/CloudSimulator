@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.schedulers.cloudlet.CloudletSchedulerSpaceShared
 import org.cloudbus.cloudsim.vms.VmSimple
 import org.cloudsimplus.listeners.EventInfo
 
-class DataCenter1 extends DataCenter {
+class SaaSDataCenter1 extends SaaSDataCenter {
 //
 //  private val SCHEDULE_INTERVAL = 5
 //

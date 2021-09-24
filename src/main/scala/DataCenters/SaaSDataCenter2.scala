@@ -18,7 +18,7 @@ import org.cloudbus.cloudsim.vms.{Vm, VmSimple}
 import org.cloudsimplus.autoscaling.{HorizontalVmScaling, HorizontalVmScalingSimple}
 import org.cloudsimplus.listeners.EventInfo
 
-class DataCenter2 extends DataCenter{
+class SaaSDataCenter2 extends SaaSDataCenter{
 
 
   @Override

@@ -1,6 +1,6 @@
 package Simulations.SaaS
 
-import DataCenters.{DataCenter, DataCenter1, DataCenter2, DataCenter3}
+import DataCenters.{SaaSDataCenter, SaaSDataCenter1, SaaSDataCenter2, SaaSDataCenter3}
 import HelperUtils.{CreateLogger, Measurements, ObtainConfigReference, CloudletHelper}
 import org.cloudbus.cloudsim.allocationpolicies.*
 import org.cloudbus.cloudsim.brokers.DatacenterBrokerSimple
@@ -29,7 +29,7 @@ object SmallApplicationSaaS:
 
   def Start(dataCenterValue:Int) =
 
-    val dataCenterConfig : DataCenter = if(dataCenterValue == 1) new DataCenter1 else if(dataCenterValue == 2) new DataCenter2 else new DataCenter3
+    val dataCenterConfig : SaaSDataCenter = if(dataCenterValue == 1) new SaaSDataCenter1 else if(dataCenterValue == 2) new SaaSDataCenter2 else new SaaSDataCenter3
 
     val configFile = "datacenter" + dataCenterValue.toString + ".conf"
 

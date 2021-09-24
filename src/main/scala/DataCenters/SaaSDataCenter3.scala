@@ -17,7 +17,7 @@ import org.cloudbus.cloudsim.vms.{Vm, VmSimple}
 import org.cloudsimplus.autoscaling.{HorizontalVmScalingSimple, VerticalVmScaling, VerticalVmScalingSimple}
 import org.cloudsimplus.listeners.EventInfo
 
-class DataCenter3 extends DataCenter{
+class SaaSDataCenter3 extends SaaSDataCenter{
 
   override def createVms(vmNumbers: Int, vmMips: Long, vmPes: Int, vmRam: Long, vmBandwith: Long): List[VmSimple] = {
     val vms = (1 to vmNumbers).map(index => {

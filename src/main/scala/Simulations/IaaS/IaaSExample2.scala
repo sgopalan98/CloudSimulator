@@ -22,7 +22,7 @@
  *     along with CloudSim Plus. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.cloudsimplus.examples.migration
+package Simulations.IaaS
 
 import ch.qos.logback.classic.Level
 import org.cloudbus.cloudsim.allocationpolicies._
@@ -52,7 +52,7 @@ import org.cloudbus.cloudsim.vms.Vm
 import org.cloudbus.cloudsim.vms.VmSimple
 import org.cloudsimplus.builders.tables.CloudletsTableBuilder
 import org.cloudsimplus.builders.tables.HostHistoryTableBuilder
-import org.cloudsimplus.examples.migration.IaaSExample2._
+import Simulations.IaaS.IaaSExample2._
 import org.cloudsimplus.listeners.DatacenterBrokerEventInfo
 import org.cloudsimplus.listeners.EventListener
 import org.cloudsimplus.listeners.VmHostEventInfo

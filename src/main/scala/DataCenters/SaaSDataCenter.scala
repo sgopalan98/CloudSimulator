@@ -11,7 +11,7 @@ import org.cloudbus.cloudsim.vms.VmSimple
 import org.cloudsimplus.listeners.EventInfo
 import org.slf4j.Logger
 
-abstract class DataCenter {
+abstract class SaaSDataCenter {
   def createVms(vmNumbers: Int, vmMips: Long, vmPes: Int, vmRam: Long, vmBandwith: Long): List[VmSimple]
   def createHosts(logger: Logger, hostNos: Int, pes: Int, mips: Long, ram: Long, bw: Long, storage: Long): IndexedSeq[Host]
   def createDataCenter(simulation: CloudSim, hosts: List[Host], allocationPolicy: VmAllocationPolicy) : DatacenterSimple
