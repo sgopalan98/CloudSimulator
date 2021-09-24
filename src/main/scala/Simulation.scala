@@ -1,8 +1,7 @@
 import HelperUtils.{CreateLogger, ObtainConfigReference}
-import Simulations.{BasicCloudSimPlusExample, PaaSSimulation}
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
-import Simulations.SaaS.SmallApplicationSaaS
+import Simulations.SaaS.SaaSApplication
 import Simulations.IaaS._
 
 object Simulation:
@@ -10,8 +9,8 @@ object Simulation:
 
   @main def runSimulation =
     logger.info("Constructing a cloud model...")
-    //new IaaSExample2().Start()
-    SmallApplicationSaaS.Start(3)
+//    new IaaSExample1().Start()
+    SaaSApplication.Start(2)
     logger.info("Finished cloud simulation...")
 
 class Simulation

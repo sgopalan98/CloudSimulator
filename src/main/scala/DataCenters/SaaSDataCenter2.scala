@@ -1,7 +1,6 @@
 package DataCenters
 
 
-import Simulations.SaaS.AutoScalingHorizontal.{VM_BW, VM_MIPS, VM_RAM}
 import org.cloudbus.cloudsim.allocationpolicies.VmAllocationPolicy
 import org.cloudbus.cloudsim.brokers.DatacenterBrokerSimple
 import org.cloudbus.cloudsim.core.CloudSim

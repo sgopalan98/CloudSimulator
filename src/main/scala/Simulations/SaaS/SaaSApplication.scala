@@ -22,10 +22,10 @@ import org.cloudsimplus.listeners.{EventInfo, EventListener}
 import java.util
 import scala.collection.JavaConverters.*
 
-class SmallApplicationSaaS
+class SaaSApplication
 
-object SmallApplicationSaaS:
-  val logger = CreateLogger(classOf[SmallApplicationSaaS])
+object SaaSApplication:
+  val logger = CreateLogger(classOf[SaaSApplication])
 
   def Start(dataCenterValue:Int) =
 
