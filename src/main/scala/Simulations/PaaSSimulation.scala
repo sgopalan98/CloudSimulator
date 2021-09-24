@@ -58,7 +58,7 @@ object PaaSSimulation:
       case _ => new CloudletSchedulerTimeShared()
     }
     val vmList = List(
-      new VmSimple(config.getLong(configKey+".vm.mipsCapacity"), 4)
+      new VmSimple(config.getLong(configKey+".vm.mipsCapacity"), 2)
         .setRam(config.getLong(configKey+".vm.RAMInMBs"))
         .setBw(config.getLong(configKey+".vm.BandwidthInMBps"))
         .setSize(config.getLong(configKey+".vm.StorageInMBs"))
@@ -69,7 +69,7 @@ object PaaSSimulation:
     val cloudletNo = config.getInt(configKey+".cloudlet.number")
     logger.info(s"number of cloudlet No $cloudletNo")
     val cloudletList = {
-      (1 to cloudletNo).map(_ => CloudletSimple(config.getLong(configKey + ".cloudlet.size"), config.getInt(configKey + ".cloudlet.PEs")))
+      (1 to cloudletNo).map(_ => CloudletSimple(config.getLong(configKey + ".cloudlet.size"), config.getInt(configKey + ".cloudlet.PEs")).setUtilizationModelRam(new UtilizationModelFull))
     }
 
     logger.info(s"Created a list of cloudlets: $cloudletList")
@@ -79,5 +79,7 @@ object PaaSSimulation:
 
     logger.info("Starting cloud simulation...")
     cloudsim.start();
+    val cs: List[CloudletSimple] = broker0.getCloudletFinishedList().asScala.toList
+    cs.map(c => logger.info(s"${c.getUtilizationModelRam}"))
 
     new CloudletsTableBuilder(broker0.getCloudletFinishedList()).build();

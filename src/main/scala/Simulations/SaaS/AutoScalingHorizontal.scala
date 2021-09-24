@@ -169,31 +169,6 @@ object AutoScalingHorizontal:
     vmExecList.map(vm => logger.info(s"The CPU util is ${vm.getCpuUtilizationStats.getMax}"))
 
 
-  def createCloudlets(info: EventInfo, broker : DatacenterBrokerSimple) =
-    val time = info.getTime
-
-    if(info.getTime % 10 == 0 && info.getTime <= 50){
-      val cloudletsNumber = 10
-      val cloudlets:List[Cloudlet] = (1 to 4).map(index => {
-        val cloudlet = CloudletSimple(CLOUDLET_LENGHT, 2)
-          .setFileSize(CLOUDLET_FILESIZE)
-          .setOutputSize(CLOUDLET_OUTPUTSIZE)
-        cloudlet
-        //broker.bindCloudletToVm(cloudlet, vm)
-      }
-      ).toList
-      broker.submitCloudletList(cloudlets.asJava)
-    }
-
-  def createVm() =
-    val vm = VmSimple(VM_MIPS, 2).setRam(VM_RAM).setBw(VM_BW).setCloudletScheduler(new CloudletSchedulerTimeShared)
-    vm
-
-  def overloadedPredicate(vm: VmSimple) = {
-    vm.getCpuPercentUtilization() > 0.7
-  }
-
-
 
 
 

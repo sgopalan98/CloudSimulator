@@ -105,7 +105,6 @@ object AutoScalingVertical:
     //Creating VMs
     val vms = (1 to VMS).map(index => {
       val verticalVmScalingSimple = new VerticalVmScalingSimple(classOf[Pe], 0.1)
-      val ret = 2*verticalVmScalingSimple.getScalingFactor*verticalVmScalingSimple.getAllocatedResource
 //      verticalVmScalingSimple.setResourceScaling((vs) => 2*vs.getScalingFactor*vs.getAllocatedResource)
 //      verticalVmScalingSimple.setResourceScaling()
       verticalVmScalingSimple.setLowerThresholdFunction((vm:Vm) => 0.1D)
@@ -133,6 +132,7 @@ object AutoScalingVertical:
 
     simulation.addOnClockTickListener(info =>{
       val vmList : List[VmSimple] = broker.getVmCreatedList.asScala.toList
+      vmList.map(vm => logger.info(s"\t\t Loaded class? - ${vm.getPeVerticalScaling.getAllocatedResource}"))
       //vmList.map(vm => logger.info(s"\t\t Request - ${vm.getPeVerticalScaling.requestUpScalingIfPredicateMatches(vm.)}"))
       vmList.map(vm => {
         if(vm.getPeVerticalScaling.isVmOverloaded && vm.getNumberOfPes + 1 < vm.getHost.getFreePesNumber)
@@ -143,8 +143,6 @@ object AutoScalingVertical:
       vmList.map(vm => vm.getHost.getVmScheduler.allocatePesForVm(vm))
       vmList.map(vm => logger.info(s"\t\tTime ${info.getTime}: Vm ${vm.getId} CPU Usage: ${vm.getCpuPercentUtilization()*100.0} (${vm.getNumberOfPes} vCPUs. Running Cloudlets: #${vm.getCloudletScheduler().getCloudletExecList().size()}). RAM usage: %.2f%% (%d MB)%n"))
       vmList.map(vm => logger.info(s"\t\t Is it loaded? - ${vm.getPeVerticalScaling.isVmOverloaded}"))
-
-
     })
 
     //Run simulation
