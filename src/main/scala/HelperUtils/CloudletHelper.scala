@@ -8,37 +8,7 @@ import org.cloudsimplus.listeners.EventInfo
 import collection.JavaConverters.*
 
 object CloudletHelper:
-//  private val SCHEDULE_INTERVAL = 5
-//
-//  private val HOSTS = 5
-//  private val VMS = 3
-//
-//  private val HOST_MIPS = 1000 //for each PE
-//
-//
-//  private val HOST_INITIAL_PES = 4
-//  private val HOST_RAM: Long = 500000 //host memory (MB)
-//
-//  private val HOST_STORAGE: Long = 1000000 //host storage
-//
-//
-//  private val HOST_BW: Long  = 16000L //Mb/s
-//
-//
-//  private val VM_MIPS = 1000L
-//  private val VM_SIZE = 1000 //image size (MB)
-//
-//  private val VM_RAM = 10000 //VM memory (MB)
-//
-//  private val VM_BW = 1000L
-//  private val VM_PES = 2
-//
-//  private val CLOUDLET_LENGHT = 2000000L
-//  private val CLOUDLET_FILESIZE = 300L
-//  private val CLOUDLET_OUTPUTSIZE = 300L
 
-
-  
   def delayedCloudletExecution(cloudletsNumber: Int, cloudletLength: Long, cloudletPes: Long, cloudletFileSize: Long, cloudletOutputSize: Long) = {
     val cloudlets: List[Cloudlet] = (1 to cloudletsNumber).map(index => {
       val cloudlet = CloudletSimple(cloudletLength, cloudletPes)

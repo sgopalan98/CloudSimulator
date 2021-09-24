@@ -14,8 +14,7 @@ import org.slf4j.Logger
 abstract class SaaSDataCenter {
   def createVms(vmNumbers: Int, vmMips: Long, vmPes: Int, vmRam: Long, vmBandwith: Long): List[VmSimple]
   def createHosts(logger: Logger, hostNos: Int, pes: Int, mips: Long, ram: Long, bw: Long, storage: Long): IndexedSeq[Host]
-  def createDataCenter(simulation: CloudSim, hosts: List[Host], allocationPolicy: VmAllocationPolicy) : DatacenterSimple
-  
+  def createDataCenter(simulation: CloudSim, hosts: List[Host], allocationPolicy: VmAllocationPolicy, costPerSecond: Double, costPerMem: Double, costPerStorage: Double, costPerBw: Double) : DatacenterSimple
   def getNoHosts(configFile:String) : Int = {
     val config = ObtainConfigReference("DataCenter", configFile) match {
       case Some(value) => value
@@ -102,6 +101,38 @@ abstract class SaaSDataCenter {
       case None => throw new RuntimeException("Cannot obtain a reference to the config data.")
     }
     config.getInt("DataCenter.vm.BandwidthInMBps")
+  }
+
+  def getCostPerSecond(configFile: String): Double = {
+    val config = ObtainConfigReference("DataCenter", configFile) match {
+      case Some(value) => value
+      case None => throw new RuntimeException("Cannot obtain a reference to the config data.")
+    }
+    config.getDouble("DataCenter.cost.costPerSecond")
+  }
+
+  def getCostPerMem(configFile: String): Double = {
+    val config = ObtainConfigReference("DataCenter", configFile) match {
+      case Some(value) => value
+      case None => throw new RuntimeException("Cannot obtain a reference to the config data.")
+    }
+    config.getDouble("DataCenter.cost.costPerMem")
+  }
+
+  def getCostPerStorage(configFile: String): Double = {
+    val config = ObtainConfigReference("DataCenter", configFile) match {
+      case Some(value) => value
+      case None => throw new RuntimeException("Cannot obtain a reference to the config data.")
+    }
+    config.getDouble("DataCenter.cost.costPerStorage")
+  }
+
+  def getCostPerBw(configFile: String): Double = {
+    val config = ObtainConfigReference("DataCenter", configFile) match {
+      case Some(value) => value
+      case None => throw new RuntimeException("Cannot obtain a reference to the config data.")
+    }
+    config.getDouble("DataCenter.cost.costPerBw")
   }
   
 }

@@ -51,7 +51,12 @@ object SmallApplicationSaaS:
     
     val allocationPolicy = new VmAllocationPolicyBestFit()
 
-    val dataCenter = dataCenterConfig.createDataCenter(simulation, hosts.toList, allocationPolicy)
+    val costPerSecond = dataCenterConfig.getCostPerSecond(configFile)
+    val costPerMem = dataCenterConfig.getCostPerMem(configFile)
+    val costPerStorage = dataCenterConfig.getCostPerStorage(configFile)
+    val costPerBw = dataCenterConfig.getCostPerBw(configFile)
+
+    val dataCenter = dataCenterConfig.createDataCenter(simulation, hosts.toList, allocationPolicy, costPerSecond, costPerMem, costPerStorage, costPerBw)
     dataCenter.setSchedulingInterval(1)
 
     

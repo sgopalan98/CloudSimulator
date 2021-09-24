@@ -10,7 +10,8 @@ object Simulation:
 
   @main def runSimulation =
     logger.info("Constructing a cloud model...")
-    new IaaSExample2().Start()
+    //new IaaSExample2().Start()
+    SmallApplicationSaaS.Start(3)
     logger.info("Finished cloud simulation...")
 
 class Simulation

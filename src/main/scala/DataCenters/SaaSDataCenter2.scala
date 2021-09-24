@@ -37,13 +37,13 @@ class SaaSDataCenter2 extends SaaSDataCenter{
   }
 
   @Override
-  def createDataCenter(simulation: CloudSim, hosts: List[Host], allocationPolicy: VmAllocationPolicy) =
+  def createDataCenter(simulation: CloudSim, hosts: List[Host], allocationPolicy: VmAllocationPolicy, costPerSecond: Double, costPerMem: Double, costPerStorage: Double, costPerBw: Double) : DatacenterSimple =
     val dataCenter = DatacenterSimple(simulation, hosts.asJava, allocationPolicy)
     dataCenter.getCharacteristics()
-      .setCostPerSecond(0.01)
-      .setCostPerMem(0.02)
-      .setCostPerStorage(0.001)
-      .setCostPerBw(0.005)
+      .setCostPerSecond(costPerSecond)
+      .setCostPerMem(costPerMem)
+      .setCostPerStorage(costPerStorage)
+      .setCostPerBw(costPerBw)
     dataCenter
   
 

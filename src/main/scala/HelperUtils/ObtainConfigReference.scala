@@ -12,11 +12,6 @@ object ObtainConfigReference:
     case Success(config) => Some(config)
   }
   private val logger = CreateLogger(classOf[ObtainConfigReference])
-//  private def ValidateConfig(confEntry: String, configFile: String):Option[Config] = {
-//
-//    val config =
-//      config
-//  }
 
   def apply(confEntry:String, configFile: String): Option[Config] = {
     loadConfig(configFile) match {
