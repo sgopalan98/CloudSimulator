@@ -25,7 +25,7 @@
 package org.cloudsimplus.examples.migration
 
 import ch.qos.logback.classic.Level
-import org.cloudbus.cloudsim.allocationpolicies.VmAllocationPolicy
+import org.cloudbus.cloudsim.allocationpolicies._
 import org.cloudbus.cloudsim.allocationpolicies.migration.VmAllocationPolicyMigrationBestFitStaticThreshold
 import org.cloudbus.cloudsim.allocationpolicies.migration.VmAllocationPolicyMigrationStaticThreshold
 import org.cloudbus.cloudsim.brokers.DatacenterBroker
@@ -52,7 +52,7 @@ import org.cloudbus.cloudsim.vms.Vm
 import org.cloudbus.cloudsim.vms.VmSimple
 import org.cloudsimplus.builders.tables.CloudletsTableBuilder
 import org.cloudsimplus.builders.tables.HostHistoryTableBuilder
-import org.cloudsimplus.examples.migration.IaaSExample1._
+import org.cloudsimplus.examples.migration.IaaSExample2._
 import org.cloudsimplus.listeners.DatacenterBrokerEventInfo
 import org.cloudsimplus.listeners.EventListener
 import org.cloudsimplus.listeners.VmHostEventInfo
@@ -61,7 +61,7 @@ import org.cloudsimplus.util.Log
 //remove if not needed
 import scala.collection.JavaConverters.*
 
-object IaaSExample1 {
+object IaaSExample2 {
 
   /**
    * @see Datacenter#getSchedulingInterval()
@@ -164,7 +164,7 @@ object IaaSExample1 {
   private val CLOUDLET_CPU_INCREMENT_PER_SECOND: Double = 0.04
 
   def main(args: Array[String]): Unit = {
-    new IaaSExample1()
+    new IaaSExample2()
   }
 
 }
@@ -226,14 +226,14 @@ object IaaSExample1 {
  *
  * TODO Verify if inter-datacenter VM migration is working by default using the DatacenterBroker class.
  */
-class IaaSExample1 private () {
+class IaaSExample2 private () {
 
   /**
    * List of all created VMs.
    */ /**
    * List of all created VMs.
    */
-//  private val vmList: List[Vm] = new ArrayList()
+  //  private val vmList: List[Vm] = new ArrayList()
 
   private val simulation: CloudSim = new CloudSim()
 
@@ -242,9 +242,9 @@ class IaaSExample1 private () {
 
 
 
-//  private var allocationPolicy: VmAllocationPolicyMigrationStaticThreshold = _
+  //  private var allocationPolicy: VmAllocationPolicyMigrationStaticThreshold = _
 
-//  private var hostList: List[Host] = _
+  //  private var hostList: List[Host] = _
 
   private var migrationsNumber: Int = 0
 
@@ -267,25 +267,25 @@ class IaaSExample1 private () {
 
   val cloudletList = createAndSubmitCloudlets(broker, vmList)
 
-  broker.addOnVmsCreatedListener((info) => {
-    allocationPolicy.setOverUtilizationThreshold(
-      HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION)
-    broker.removeOnVmsCreatedListener(info.getListener)
-
-    vmList.map((vm) => showVmAllocatedMips(vm, vm.getHost, info.getTime))
-    println()
-    hostList.map((host) => showHostAllocatedMips(info.getTime, host))
-    println()
-  })
+//  broker.addOnVmsCreatedListener((info) => {
+//    allocationPolicy.setOverUtilizationThreshold(
+//      HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION)
+//    broker.removeOnVmsCreatedListener(info.getListener)
+//
+//    vmList.map((vm) => showVmAllocatedMips(vm, vm.getHost, info.getTime))
+//    println()
+//    hostList.map((host) => showHostAllocatedMips(info.getTime, host))
+//    println()
+//  })
 
   simulation.start()
 
   val finishedList: List[Cloudlet] = broker.getCloudletFinishedList.asScala.toList
 
-//  finishedList.sort(
-//    Comparator
-//      .comparingLong((c: Cloudlet) => c.getVm.getHost.getId)
-//      .thenComparingLong((c) => c.getVm.getId))
+  //  finishedList.sort(
+  //    Comparator
+  //      .comparingLong((c: Cloudlet) => c.getVm.getHost.getId)
+  //      .thenComparingLong((c) => c.getVm.getId))
 
   new CloudletsTableBuilder(finishedList.asJava).build()
 
@@ -294,10 +294,10 @@ class IaaSExample1 private () {
 
 
   hostList.filter(host => host.getId <=2).map(this.printHostStateHistory(_))
-//  hostList
-//    .stream()
-//    .filter((h) => h.getId <= 2)
-//    .forEach(this.printHostStateHistory)
+  //  hostList
+  //    .stream()
+  //    .filter((h) => h.getId <= 2)
+  //    .forEach(this.printHostStateHistory)
 
   System.out.printf("Number of VM migrations: %d%n", migrationsNumber)
 
@@ -324,7 +324,7 @@ class IaaSExample1 private () {
     //Migration host (target)
     showHostAllocatedMips(info.getTime, targetHost)
     System.out.println("Migrations happening")
-//    println() { migrationsNumber += 1; migrationsNumber - 1 }
+    //    println() { migrationsNumber += 1; migrationsNumber - 1 }
     if (migrationsNumber > 1) {
       return
     }
@@ -368,9 +368,9 @@ class IaaSExample1 private () {
       info.getVm,
       host)
     System.out.print("\t\t")
-//    showHostAllocatedMips(info.getTime, hostList.get(1))
-//    System.out.print("\t\t")
-//    showHostAllocatedMips(info.getTime, host)
+    //    showHostAllocatedMips(info.getTime, hostList.get(1))
+    //    System.out.print("\t\t")
+    //    showHostAllocatedMips(info.getTime, host)
   }
 
   private def showHostAllocatedMips(time: Double, host: Host): Unit = {
@@ -387,9 +387,9 @@ class IaaSExample1 private () {
   }
 
   def createAndSubmitCloudlets(broker: DatacenterBroker, vmList: List[Vm]): List[Cloudlet] = {
-//    val list: List[Cloudlet] = new ArrayList[Cloudlet](VM_PES.length)
+    //    val list: List[Cloudlet] = new ArrayList[Cloudlet](VM_PES.length)
     var cloudlet: Cloudlet = Cloudlet.NULL
-    val um: UtilizationModelDynamic =
+//    val um: UtilizationModelDynamic =
       createCpuUtilizationModel(CLOUDLET_INITIAL_CPU_PERCENTAGE, 1)
     val cloudletList = vmList.map(vm => {
       val utilizationModelFull: UtilizationModel = new UtilizationModelFull()
@@ -399,16 +399,15 @@ class IaaSExample1 private () {
           .setOutputSize(CLOUDLET_OUTPUTSIZE)
           .setUtilizationModelRam(utilizationModelFull)
           .setUtilizationModelBw(utilizationModelFull)
-          .setUtilizationModelCpu(um)
       broker.bindCloudletToVm(cloudlet, vm)
       cloudlet
     })
-//    for (vm <- vmList) {
-//      cloudlet = createCloudlet(vm, broker, um)
-//      list.add(cloudlet)
-//    }
+    //    for (vm <- vmList) {
+    //      cloudlet = createCloudlet(vm, broker, um)
+    //      list.add(cloudlet)
+    //    }
     //Changes the CPU usage of the last cloudlet to start at a lower value and increase dynamically up to 100%
-    cloudlet.setUtilizationModelCpu(createCpuUtilizationModel(0.2, 1))
+//    cloudlet.setUtilizationModelCpu(createCpuUtilizationModel(0.2, 1))
     broker.submitCloudletList(cloudletList.asJava)
     cloudletList
   }
@@ -443,8 +442,8 @@ class IaaSExample1 private () {
         .setBw(VM_BW.toLong)
         .setSize(VM_SIZE)
         .setCloudletScheduler(new CloudletSchedulerTimeShared())
-      vm.addOnMigrationStartListener(this.startMigration)
-      vm.addOnMigrationFinishListener(this.finishMigration)
+//      vm.addOnMigrationStartListener(this.startMigration)
+//      vm.addOnMigrationFinishListener(this.finishMigration)
       vm
     })
     broker.submitVmList(vmList.asJava)
@@ -484,12 +483,12 @@ class IaaSExample1 private () {
       throw new IllegalArgumentException(
         "Max CPU usage must be equal or greater than the initial CPU usage.")
     }
-//    val initialCpuUsagePercent = Math.min(initialCpuUsagePercent, 1)
-//    val maxCpuUsagePercentage = Math.min(maxCpuUsagePercentage, 1)
+    //    val initialCpuUsagePercent = Math.min(initialCpuUsagePercent, 1)
+    //    val maxCpuUsagePercentage = Math.min(maxCpuUsagePercentage, 1)
     var um: UtilizationModelDynamic = if (Math.min(initialCpuUsagePercent, 1) < Math.min(maxCpuUsagePercentage, 1))
-        new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
-          .setUtilizationUpdateFunction(this.getCpuUsageIncrement)
-      else new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
+      new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
+        .setUtilizationUpdateFunction(this.getCpuUsageIncrement)
+    else new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
     um.setMaxResourceUtilization(Math.min(maxCpuUsagePercentage, 1))
     um
   }
@@ -519,13 +518,7 @@ class IaaSExample1 private () {
   }
 
   private def createAllocationPolicy() = {
-    val allocationPolicy =
-      new VmAllocationPolicyMigrationBestFitStaticThreshold(
-        new VmSelectionPolicyMinimumUtilization(),
-        HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION + 0.2)
-    Log.setLevel(VmAllocationPolicy.LOGGER, Level.WARN)
-    allocationPolicy.setUnderUtilizationThreshold(
-      HOST_UNDER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION)
+    val allocationPolicy = new VmAllocationPolicyFirstFit
     allocationPolicy
   }
   /**
@@ -536,40 +529,11 @@ class IaaSExample1 private () {
    */
   private def createDatacenter(hostList: List[Host], allocationPolicy: VmAllocationPolicy): Datacenter = {
 
-    /**
-     * Sets an upper utilization threshold higher than the
-     * {@link #HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION}
-     * to enable placing VMs which will use more CPU than
-     * defined by the value in the mentioned constant.
-     * After VMs are all submitted to Hosts, the threshold is changed
-     * to the value of the constant.
-     * This is used to  place VMs into a Host which will
-     * become overloaded in order to trigger the migration.
-     */
-
     val dc: DatacenterSimple =
       new DatacenterSimple(simulation, hostList.asJava, allocationPolicy)
-//    for (host <- hostList) {
-//      System.out.printf(
-//        "# Created %s with %.0f MIPS x %d PEs (%.0f total MIPS)%n",
-//        host,
-//        host.getMips,
-//        host.getNumberOfPes,
-//        host.getTotalMipsCapacity)
-//    }
-    dc.setSchedulingInterval(SCHEDULING_INTERVAL)
-      .setHostSearchRetryDelay(HOST_SEARCH_RETRY_DELAY)
     dc
   }
 
-  /**
-   * A listener that is called after all VMs from a broker are created,
-   * setting the allocation policy to the default value
-   * so that some Hosts will be overloaded with the placed VMs and migration will be fired.
-   *
-   * The listener is removed after finishing, so that it's called just once,
-   * even if new VMs are submitted and created latter on.
-   */
-//  private def onVmsCreatedListener(info: DatacenterBrokerEventInfo): Unit =
+
 
 }
