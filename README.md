@@ -24,10 +24,16 @@ UIN: 675432388
 ##### Running the application
 + Clone the project 
 + On the console  
++ To clear built files,
 
 ```
-sbt clean compile test
+sbt clean 
 ``` 
++ To build,
+```
+sbt compile
+```
++ To run(along with clean, compile),
 ```
 sbt clean compile run
 ```
