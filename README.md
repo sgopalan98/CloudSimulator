@@ -484,19 +484,22 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 
 + In this case, after VM2 is allocated to HostID 1, VM3 is allocated to Host ID 1 because Host ID 1 still has capacity for one more PE (Unlike Configuration #1 where it was allocated to Host ID 1)
 
-## Inference
+### Inference
 
 Through these simulations, we can understand that VmMigrationPolicyOnThreshold can be useful when Host load increases beyond a limit and if not implemented, the host might crash/Under perform.
 
 ---
 
 
-#### Discussion
+## Discussion
+
 1. From SaaS service, we observed the impact of scaling on the performance of the cloudlets and the VMs
 2. From the IaaS service, we observed the VmAllocationPolicy impact on the host performance, 
 
+---
 
-#### Future Improvements
+## Future Improvements
+
 - Understanding the impact of using both Horizontal scaling and Vertical scaling, and further understanding when it is optimal to implement them.
 - IaaS services offer high customisation. Thus, many other factors can be looked at to optimise cloud computing, like Networking Hosts, VmSchedulers, CloudletSchedulers.
 - Combining various factors to get an even more depth understanding of cloud architecture.
