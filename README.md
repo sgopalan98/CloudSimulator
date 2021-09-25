@@ -91,11 +91,11 @@ Same clouldet load is given to three datacenters with scaling implemented to mea
 
 ## Configuration 1 - No scaling
 
-### DataCenter
+#### DataCenter
 
 + Hostnumber = 5
 
-### Host
+#### Host
 
 + PEs = 4
 + mipsCapacity = 20000
@@ -103,7 +103,7 @@ Same clouldet load is given to three datacenters with scaling implemented to mea
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### VM
+#### VM
 
 + vmNumbers = 3
 + mipsCapacity = 1000
@@ -111,7 +111,7 @@ Same clouldet load is given to three datacenters with scaling implemented to mea
 + RAMInMBs = 10000
 + BandwidthInMBps = 1000
 
-### Cost
+#### Cost
 
 + costPerSecond = 0.01
 + costPerMem = 0.02
@@ -153,11 +153,11 @@ The total cost is 642.074796
 
 ## Configuration 2 - Auto Scaling - Horizontal
 
-### DataCenter
+#### DataCenter
 
 + Hostnumber = 5
 
-### Host
+#### Host
 
 + PEs = 20 (Higher than normal because Host should have enough PEs to adapt when VM horizontally scales when overloaded; No of VMs are same as sim #1)
 + mipsCapacity = 20000
@@ -165,7 +165,7 @@ The total cost is 642.074796
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### VM
+#### VM
 
 + vmNumbers = 3
 + mipsCapacity = 1000
@@ -173,7 +173,7 @@ The total cost is 642.074796
 + RAMInMBs = 10000
 + BandwidthInMBps = 1000
 
-### Cost
+#### Cost
 
 + costPerSecond = 0.20
 + costPerMem = 0.02
@@ -213,13 +213,13 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + Since there is Horizontal Scaling in this simulation, VMs are increased (In this case, the number of VMs increased to 6 due to heavy load). Thus, the total time of exection of the set of clouldlets is 6000 seconds (Net difference is 2000 seconds) . However, since there is horizontal scaling implemented, the cost incurred is $708.11
 
 
-## Configuration 3 - Auto Scaling - Horizontal
+### Configuration 3 - Auto Scaling - Horizontal
 
-### DataCenter
+#### DataCenter
 
 + Hostnumber = 5
 
-### Host
+#### Host
 
 + PEs = 4
 + mipsCapacity = 20000
@@ -227,7 +227,7 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### VM
+#### VM
 
 + vmNumbers = 3
 + mipsCapacity = 1000
@@ -235,7 +235,7 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + RAMInMBs = 10000
 + BandwidthInMBps = 1000
 
-### Cost
+#### Cost
 
 + costPerSecond = 0.30
 + costPerMem = 0.02
@@ -287,7 +287,7 @@ Since this is IaaS, we have control over how VMs are scheduled on the hosts and 
 Same cloudlets are implemented to two datacenters where one datacenter implements a different VMAllocationPolicy in host which allocates based on the utilisation of the VMs. 
 
 
-### Cloudet Information
+#### Cloudet Information
 
 - Length = 4
 - Pes =  2
@@ -296,9 +296,9 @@ Same cloudlets are implemented to two datacenters where one datacenter implement
 - outputSize = 300 
 - UtilizationModeCpu = Full
 
-## Configuration 1 - VmAllocationPolicyMigrationBestFitStaticThreshold
+### Configuration 1 - VmAllocationPolicyMigrationBestFitStaticThreshold
 
-### DataCenter
+#### DataCenter
 
 + Hostnumber = 3
 + vmNumbers = 4
@@ -306,7 +306,7 @@ Same cloudlets are implemented to two datacenters where one datacenter implement
 + HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION = 0.7
 + HOST_SEARCH_RETRY_DELAY = 60
 
-### Host 1
+#### Host 1
 
 + PEs = 4
 + mipsCapacity = 1000
@@ -315,7 +315,7 @@ Same cloudlets are implemented to two datacenters where one datacenter implement
 + BandwidthInMBps = 16000
 
 
-### Host 2
+#### Host 2
 
 + PEs = 5
 + mipsCapacity = 1000
@@ -323,7 +323,7 @@ Same cloudlets are implemented to two datacenters where one datacenter implement
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### Host 3
+#### Host 3
 
 + PEs = 5
 + mipsCapacity = 1000
@@ -331,28 +331,28 @@ Same cloudlets are implemented to two datacenters where one datacenter implement
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### VM 1
+#### VM 1
 
 + mipsCapacity = 1000
 + PEs = 2
 + RAMInMBs = 10000
 + Size = 1000
 
-### VM 2
+#### VM 2
 
 + mipsCapacity = 1000
 + PEs = 2
 + RAMInMBs = 10000
 + Size = 1000
 
-### VM 3
+#### VM 3
 
 + mipsCapacity = 1000
 + PEs = 2
 + RAMInMBs = 10000
 + Size = 1000
 
-### VM 4
+#### VM 4
 
 + mipsCapacity = 1000
 + PEs = 1
@@ -360,7 +360,7 @@ Same cloudlets are implemented to two datacenters where one datacenter implement
 + Size = 1000
 
 
-### Cost
+#### Cost
 
 + costPerSecond = 0.01
 + costPerMem = 0.02
@@ -393,14 +393,14 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + In this case, after VM2 is allocated to HostID 1, VM3 is allocated to HostID 2 instead of 1, even though Host ID 1 has 1 PE remaining which is VM3's requirement. This is because Host ID1 surpasses the threshold when VMs 1 and 2 are allocated. Thus, VM ID 3 is allocated to Host ID 2. 
 
 
-## Configuration 2 - VmAllocationFirstFit
+### Configuration 2 - VmAllocationFirstFit
 
-### DataCenter
+#### DataCenter
 
 + Hostnumber = 3
 + vmNumbers = 4
 
-### Host 1
+#### Host 1
 
 + PEs = 4
 + mipsCapacity = 1000
@@ -409,7 +409,7 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + BandwidthInMBps = 16000
 
 
-### Host 2
+#### Host 2
 
 + PEs = 5
 + mipsCapacity = 1000
@@ -417,7 +417,7 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### Host 3
+#### Host 3
 
 + PEs = 5
 + mipsCapacity = 1000
@@ -425,28 +425,28 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + StorageInMBs = 1000000
 + BandwidthInMBps = 16000
 
-### VM 1
+#### VM 1
 
 + mipsCapacity = 1000
 + PEs = 2
 + RAMInMBs = 10000
 + Size = 1000
 
-### VM 2
+#### VM 2
 
 + mipsCapacity = 1000
 + PEs = 2
 + RAMInMBs = 10000
 + Size = 1000
 
-### VM 3
+#### VM 3
 
 + mipsCapacity = 1000
 + PEs = 2
 + RAMInMBs = 10000
 + Size = 1000
 
-### VM 4
+#### VM 4
 
 + mipsCapacity = 1000
 + PEs = 1
@@ -454,7 +454,7 @@ Cloudlet|Status |DC|Host|Host PEs |VM|VM PEs   |CloudletLen|CloudletPEs|StartTim
 + Size = 1000
 
 
-### Cost
+#### Cost
 
 + costPerSecond = 0.01
 + costPerMem = 0.02
