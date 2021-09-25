@@ -12,7 +12,7 @@ object ObtainConfigReference:
     case Success(config) => Some(config)
   }
   private val logger = CreateLogger(classOf[ObtainConfigReference])
-
+  //Return Some(Config) Object if file is present and key is present
   def apply(confEntry:String, configFile: String): Option[Config] = {
     loadConfig(configFile) match {
       case None => None

@@ -70,20 +70,21 @@ object SaaSApplication:
     val vms = dataCenterConfig.createVms(vmNumbers, vmMips, vmPes, vmRam, vmBw)
     broker.submitVmList(vms.asJava)
 
-    //Creating cloudlets
+    //Config file for Cloudlets
     val applicationConfigFile: String = "SmallApplication.conf"
     
-    
+    //Cloudlet configuration values
     val cloudletSize = CloudletHelper.getCloudletSize(applicationConfigFile)
     val cloudletFileSize = CloudletHelper.getCloudletFileSize(applicationConfigFile)
     val cloudletOutputSize = CloudletHelper.getCloudletOutputSize(applicationConfigFile)
     val cloudletPes = CloudletHelper.getCloudletPes(applicationConfigFile)
-    
+    //Creating cloudlets
     val clouldets = CloudletHelper.createFirstCloudlets(vms, cloudletSize, cloudletPes, cloudletFileSize, cloudletOutputSize)
 
-
+    //Submitting the load
     broker.submitCloudletList(clouldets.asJava)
 
+    //Generating cloudlets that are submitted late, to check the scaling of the VMs/PEs
     simulation.addOnClockTickListener(info =>{
       if(broker.getCloudletSubmittedList.asScala.length < 10) {
         val cloudlets = CloudletHelper.delayedCloudletExecution(vms.length, cloudletSize, cloudletPes, cloudletFileSize, cloudletOutputSize)

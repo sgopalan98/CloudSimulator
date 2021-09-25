@@ -41,6 +41,7 @@ class IaaSSimulation2 {
 
   def Start() = {
 
+    //Initialising Values
     val configFile = "iaasconfig.conf"
 
     val iaasConfig = ObtainConfigReference("DataCenter", configFile) match {
@@ -81,20 +82,23 @@ class IaaSSimulation2 {
 
     val broker: DatacenterBrokerSimple = new DatacenterBrokerSimple(
       simulation)
-
-
-    println("Starting " + getClass.getSimpleName)
+    
 
     Log.setLevel(CloudSim.LOGGER, Level.WARN)
 
+    //Creating hosts to be run on Datacenter
     val hostList = createHostList(HOST_PES, HOST_RAM, HOST_MIPS, HOST_BW, HOST_STORAGE)
+    //Creaing firstfit VmAllocationPolicy
     val allocationPolicy = new VmAllocationPolicyFirstFit()
+    //Creating DataCenter
     val datacenter0: Datacenter = createDatacenter(hostList, allocationPolicy, simulation)
 
     Log.setLevel(DatacenterBroker.LOGGER, Level.WARN)
 
+    //Creating List of VMs to be executed on the Datacenter
     val vmList = createAndSubmitVms(broker, VM_PES, VM_MIPS, VM_RAM, VM_BW, VM_SIZE, simulation)
 
+    //Creaing Cloudlets to be executed on the VM
     val cloudletList = createAndSubmitCloudlets(broker, vmList, CLOUDLET_LENGTH, CLOUDLET_FILESIZE, CLOUDLET_OUTPUTSIZE)
 
     simulation.start()
@@ -103,13 +107,7 @@ class IaaSSimulation2 {
 
     new CloudletsTableBuilder(finishedList.asJava).build()
 
-    System.out.printf(
-      "%nHosts CPU usage History (when the allocated MIPS is lower than the requested, it is due to VM migration overhead)%n")
-
-
     hostList.filter(host => host.getId <= 2).map(printHostStateHistory(_))
-
-    println(getClass.getSimpleName + " finished!")
   }
 
 
@@ -155,7 +153,6 @@ class IaaSSimulation2 {
   }
 
   def createAndSubmitCloudlets(broker: DatacenterBroker, vmList: List[Vm], CLOUDLET_LENGTH: Long, CLOUDLET_FILESIZE: Long,CLOUDLET_OUTPUTSIZE: Long): List[Cloudlet] = {
-    //    val list: List[Cloudlet] = new ArrayList[Cloudlet](VM_PES.length)
     val cloudletList = vmList.map(vm => {
       val utilizationModelFull: UtilizationModel = new UtilizationModelFull()
       val cloudlet: Cloudlet =
@@ -191,9 +188,6 @@ class IaaSSimulation2 {
         showHostAllocatedMips(info.getTime, vm.getHost)
         //Migration host (target)
         showHostAllocatedMips(info.getTime, targetHost)
-        System.out.println("Migrations happening")
-        //    println() { migrationsNumber += 1; migrationsNumber - 1 }
-        //After the first VM starts being migrated, tracks some metrics along simulation time
         simulation.addOnClockTickListener(
           (clock) =>
             if (clock.getTime <= 2 || (clock.getTime >= 11 && clock.getTime <= 15))
@@ -214,8 +208,6 @@ class IaaSSimulation2 {
       throw new IllegalArgumentException(
         "Max CPU usage must be equal or greater than the initial CPU usage.")
     }
-    //    val initialCpuUsagePercent = Math.min(initialCpuUsagePercent, 1)
-    //    val maxCpuUsagePercentage = Math.min(maxCpuUsagePercentage, 1)
     val um: UtilizationModelDynamic = if (Math.min(initialCpuUsagePercent, 1) < Math.min(maxCpuUsagePercentage, 1))
       new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
         .setUtilizationUpdateFunction((um) => um.getUtilization + um.getTimeSpan * CLOUDLET_CPU_INCREMENT_PER_SECOND)
@@ -241,26 +233,8 @@ class IaaSSimulation2 {
     }).toList
     hostList
   }
-
-  /**
-   * Creates a Datacenter with number of Hosts defined by the length of {@link #HOST_PES},
-   * but only some of these Hosts will be active (powered on) initially.
-   *
-   * @return
-   */
+  
   def createDatacenter(hostList: List[Host], allocationPolicy: VmAllocationPolicy, simulation: CloudSim): Datacenter = {
-
-    /**
-     * Sets an upper utilization threshold higher than the
-     * {@link #HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION}
-     * to enable placing VMs which will use more CPU than
-     * defined by the value in the mentioned constant.
-     * After VMs are all submitted to Hosts, the threshold is changed
-     * to the value of the constant.
-     * This is used to  place VMs into a Host which will
-     * become overloaded in order to trigger the migration.
-     */
-
     val dc: DatacenterSimple =
       new DatacenterSimple(simulation, hostList.asJava, allocationPolicy)
     dc

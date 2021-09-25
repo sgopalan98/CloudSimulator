@@ -43,6 +43,7 @@ class IaaSSimulation1 {
 
   def Start() = {
 
+    //Initialising values required for execution
     val configFile = "iaasconfig.conf"
 
     val iaasConfig = ObtainConfigReference("DataCenter", configFile) match {
@@ -62,8 +63,7 @@ class IaaSSimulation1 {
 
 
     val HOST_MIPS: Int = iaasConfig.getInt("DataCenter.HOST_MIPS")
-
-    //host memory (MB)
+    
     val HOST_RAM: List[Long] = List(iaasConfig.getLong("DataCenter.host1.RAMInMBs"), iaasConfig.getLong("DataCenter.host2.RAMInMBs"), iaasConfig.getLong("DataCenter.host3.RAMInMBs"))
 
     val HOST_STORAGE: Long = iaasConfig.getLong("DataCenter.HOST_STORAGE")
@@ -73,11 +73,9 @@ class IaaSSimulation1 {
     val VM_PES: List[Int] = List(iaasConfig.getInt("DataCenter.vm1.PEs"), iaasConfig.getInt("DataCenter.vm2.PEs"), iaasConfig.getInt("DataCenter.vm3.PEs"), iaasConfig.getInt("DataCenter.vm4.PEs"))
 
     val VM_MIPS: Int = iaasConfig.getInt("DataCenter.VM_MIPS")
-
-    //image size (MB)
+    
     val VM_SIZE: Long = iaasConfig.getLong("DataCenter.VM_SIZE")
-
-    //VM memory (MB)
+    
     val VM_RAM: Int = iaasConfig.getInt("DataCenter.VM_RAM")
 
     val VM_BW: Double = HOST_BW / VM_PES.length.toDouble
@@ -91,24 +89,28 @@ class IaaSSimulation1 {
     val CLOUDLET_INITIAL_CPU_PERCENTAGE: Double = iaasConfig.getDouble("DataCenter.CLOUDLET_INITIAL_CPU_PERCENTAGE")
 
     val CLOUDLET_CPU_INCREMENT_PER_SECOND: Double = iaasConfig.getDouble("DataCenter.CLOUDLET_CPU_INCREMENT_PER_SECOND")
-
+    
+    //Creating Cloud Sim object
     val simulation: CloudSim = new CloudSim()
-
+    //Creating broker Object
     val broker: DatacenterBrokerSimple = new DatacenterBrokerSimple(
       simulation)
 
-    println("Starting " + getClass.getSimpleName)
-
     Log.setLevel(CloudSim.LOGGER, Level.WARN)
-
+    
+    //Created hosts to be set on Datacenter
     val hostList = createHostList(HOST_PES, HOST_RAM, HOST_MIPS, HOST_BW, HOST_STORAGE)
+    //Creating Custom VmAllocationPolicy
     val allocationPolicy = createAllocationPolicy(HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION, HOST_UNDER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION)
+    //Creating Datacenter
     val datacenter0: Datacenter = createDatacenter(hostList, allocationPolicy, simulation, SCHEDULING_INTERVAL, HOST_SEARCH_RETRY_DELAY)
 
     Log.setLevel(DatacenterBroker.LOGGER, Level.WARN)
 
+    //Creating VMs to be run on Datacenter
     val vmList = createAndSubmitVms(broker, VM_PES, VM_MIPS, VM_RAM, VM_BW, VM_SIZE, simulation)
 
+    //Creating Cloudlets to be run on VMs
     val cloudletList = createAndSubmitCloudlets(broker, vmList, CLOUDLET_INITIAL_CPU_PERCENTAGE, CLOUDLET_LENGTH, CLOUDLET_FILESIZE, CLOUDLET_OUTPUTSIZE, CLOUDLET_CPU_INCREMENT_PER_SECOND)
 
     broker.addOnVmsCreatedListener((info) => {
@@ -128,13 +130,7 @@ class IaaSSimulation1 {
 
     new CloudletsTableBuilder(finishedList.asJava).build()
 
-    System.out.printf(
-      "%nHosts CPU usage History (when the allocated MIPS is lower than the requested, it is due to VM migration overhead)%n")
-
-
     hostList.filter(host => host.getId <= 2).map(printHostStateHistory(_))
-
-    println(getClass.getSimpleName + " finished!")
   }
 
 
@@ -220,8 +216,6 @@ class IaaSSimulation1 {
           //Migration host (target)
           showHostAllocatedMips(info.getTime, targetHost)
           System.out.println("Migrations happening")
-          //    println() { migrationsNumber += 1; migrationsNumber - 1 }
-          //After the first VM starts being migrated, tracks some metrics along simulation time
           simulation.addOnClockTickListener(
             (clock) =>
               if (clock.getTime <= 2 || (clock.getTime >= 11 && clock.getTime <= 15))
@@ -242,8 +236,6 @@ class IaaSSimulation1 {
         throw new IllegalArgumentException(
           "Max CPU usage must be equal or greater than the initial CPU usage.")
       }
-      //    val initialCpuUsagePercent = Math.min(initialCpuUsagePercent, 1)
-      //    val maxCpuUsagePercentage = Math.min(maxCpuUsagePercentage, 1)
       val um: UtilizationModelDynamic = if (Math.min(initialCpuUsagePercent, 1) < Math.min(maxCpuUsagePercentage, 1))
         new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
           .setUtilizationUpdateFunction((um) => um.getUtilization + um.getTimeSpan * CLOUDLET_CPU_INCREMENT_PER_SECOND)
@@ -280,26 +272,8 @@ class IaaSSimulation1 {
         HOST_UNDER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION)
       allocationPolicy
     }
-
-    /**
-     * Creates a Datacenter with number of Hosts defined by the length of {@link #HOST_PES},
-     * but only some of these Hosts will be active (powered on) initially.
-     *
-     * @return
-     */
+    
     def createDatacenter(hostList: List[Host], allocationPolicy: VmAllocationPolicy, simulation: CloudSim, SCHEDULING_INTERVAL: Double, HOST_SEARCH_RETRY_DELAY: Long): Datacenter = {
-
-      /**
-       * Sets an upper utilization threshold higher than the
-       * {@link #HOST_OVER_UTILIZATION_THRESHOLD_FOR_VM_MIGRATION}
-       * to enable placing VMs which will use more CPU than
-       * defined by the value in the mentioned constant.
-       * After VMs are all submitted to Hosts, the threshold is changed
-       * to the value of the constant.
-       * This is used to  place VMs into a Host which will
-       * become overloaded in order to trigger the migration.
-       */
-
       val dc: DatacenterSimple =
         new DatacenterSimple(simulation, hostList.asJava, allocationPolicy)
       dc.setSchedulingInterval(SCHEDULING_INTERVAL)
