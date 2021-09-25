@@ -8,9 +8,29 @@ object Simulation:
   val logger = CreateLogger(classOf[Simulation])
 
   @main def runSimulation =
-    logger.info("Constructing a cloud model...")
+    logger.info("Running SaaS simulation - No Scaling...")
 //    new IaaSExample1().Start()
+    SaaSApplication.Start(1)
+    logger.info("Finished cloud simulation...")
+
+    logger.info("Running SaaS simulation - Auto Scaling - Horizontal...")
+    //    new IaaSExample1().Start()
     SaaSApplication.Start(2)
+    logger.info("Finished cloud simulation...")
+
+    logger.info("Running SaaS simulation - Auto Scaling - Vertical...")
+    //    new IaaSExample1().Start()
+    SaaSApplication.Start(3)
+    logger.info("Finished cloud simulation...")
+
+    logger.info("Running IaaS - One with VM Allocation policy with custom utilisation metric...")
+        new IaaSExample1().Start()
+//    SaaSApplication.Start(2)
+    logger.info("Finished cloud simulation...")
+
+    logger.info("Running IaaS - No VM Allocation policy...")
+        new IaaSExample2().Start()
+//    SaaSApplication.Start(2)
     logger.info("Finished cloud simulation...")
 
 class Simulation

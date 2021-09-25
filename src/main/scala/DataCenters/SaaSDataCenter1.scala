@@ -54,7 +54,6 @@ class SaaSDataCenter1 extends SaaSDataCenter {
       (1 to pes).map(pes => PeSimple(mips, new PeProvisionerSimple())
       )
     }).map(peList =>
-      logger.info(s"Pe LIST -> $peList")
       new HostSimple(ram, bw, storage, peList.toList.asJava)
         .setRamProvisioner(new ResourceProvisionerSimple())
         .setBwProvisioner(new ResourceProvisionerSimple())

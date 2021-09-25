@@ -97,8 +97,6 @@ class IaaSExample1 {
     val broker: DatacenterBrokerSimple = new DatacenterBrokerSimple(
       simulation)
 
-    var migrationsNumber: Int = 0
-
     println("Starting " + getClass.getSimpleName)
 
     Log.setLevel(CloudSim.LOGGER, Level.WARN)
@@ -135,8 +133,6 @@ class IaaSExample1 {
 
 
     hostList.filter(host => host.getId <= 2).map(printHostStateHistory(_))
-
-    System.out.printf("Number of VM migrations: %d%n", migrationsNumber)
 
     println(getClass.getSimpleName + " finished!")
   }
@@ -185,7 +181,6 @@ class IaaSExample1 {
 
     def createAndSubmitCloudlets(broker: DatacenterBroker, vmList: List[Vm], CLOUDLET_INITIAL_CPU_PERCENTAGE: Double, CLOUDLET_LENGTH: Long, CLOUDLET_FILESIZE: Long,CLOUDLET_OUTPUTSIZE: Long, CLOUDLET_CPU_INCREMENT_PER_SECOND: Double): List[Cloudlet] = {
       //    val list: List[Cloudlet] = new ArrayList[Cloudlet](VM_PES.length)
-      var cloudlet: Cloudlet = Cloudlet.NULL
       val um: UtilizationModelDynamic =
         createCpuUtilizationModel(CLOUDLET_INITIAL_CPU_PERCENTAGE, 1, CLOUDLET_CPU_INCREMENT_PER_SECOND)
       val cloudletList = vmList.map(vm => {
@@ -249,7 +244,7 @@ class IaaSExample1 {
       }
       //    val initialCpuUsagePercent = Math.min(initialCpuUsagePercent, 1)
       //    val maxCpuUsagePercentage = Math.min(maxCpuUsagePercentage, 1)
-      var um: UtilizationModelDynamic = if (Math.min(initialCpuUsagePercent, 1) < Math.min(maxCpuUsagePercentage, 1))
+      val um: UtilizationModelDynamic = if (Math.min(initialCpuUsagePercent, 1) < Math.min(maxCpuUsagePercentage, 1))
         new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
           .setUtilizationUpdateFunction((um) => um.getUtilization + um.getTimeSpan * CLOUDLET_CPU_INCREMENT_PER_SECOND)
       else new UtilizationModelDynamic(Math.min(initialCpuUsagePercent, 1))
