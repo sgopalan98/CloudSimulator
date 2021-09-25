@@ -37,7 +37,7 @@ import org.cloudsimplus.util.Log
 //remove if not needed
 import scala.collection.JavaConverters.*
 
-class IaaSExample2 {
+class IaaSSimulation2 {
 
   def Start() = {
 

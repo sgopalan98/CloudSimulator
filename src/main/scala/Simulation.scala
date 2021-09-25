@@ -9,7 +9,6 @@ object Simulation:
 
   @main def runSimulation =
     logger.info("Running SaaS simulation - No Scaling...")
-//    new IaaSExample1().Start()
     SaaSApplication.Start(1)
     logger.info("Finished cloud simulation...")
 
@@ -24,12 +23,12 @@ object Simulation:
     logger.info("Finished cloud simulation...")
 
     logger.info("Running IaaS - One with VM Allocation policy with custom utilisation metric...")
-        new IaaSExample1().Start()
+        new IaaSSimulation1().Start()
 //    SaaSApplication.Start(2)
     logger.info("Finished cloud simulation...")
 
     logger.info("Running IaaS - No VM Allocation policy...")
-        new IaaSExample2().Start()
+        new IaaSSimulation2().Start()
 //    SaaSApplication.Start(2)
     logger.info("Finished cloud simulation...")
 

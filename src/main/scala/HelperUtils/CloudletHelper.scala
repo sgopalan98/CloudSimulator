@@ -2,6 +2,7 @@ package HelperUtils
 
 import org.cloudbus.cloudsim.brokers.DatacenterBrokerSimple
 import org.cloudbus.cloudsim.cloudlets.{Cloudlet, CloudletSimple}
+import org.cloudbus.cloudsim.utilizationmodels.UtilizationModelStochastic
 import org.cloudbus.cloudsim.vms.VmSimple
 import org.cloudsimplus.listeners.EventInfo
 
@@ -24,9 +25,11 @@ object CloudletHelper:
         val cloudlets:List[Cloudlet] = vms.flatMap(vm => {
           val list = CloudletSimple(cloudletSize, cloudletPes)
             .setFileSize(cloudletFileSize)
-            .setOutputSize(cloudletOutputSize) :: CloudletSimple(cloudletSize, cloudletPes)
+            .setOutputSize(cloudletOutputSize)
+            :: CloudletSimple(cloudletSize, cloudletPes)
             .setFileSize(cloudletFileSize)
-            .setOutputSize(cloudletOutputSize) :: Nil
+            .setOutputSize(cloudletOutputSize)
+            :: Nil
           list
         })
     cloudlets

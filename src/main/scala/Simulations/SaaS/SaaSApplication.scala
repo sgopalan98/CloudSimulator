@@ -33,8 +33,6 @@ object SaaSApplication:
 
     val configFile = "datacenter" + dataCenterValue.toString + ".conf"
 
-    val seed = 1
-
     val simulation = new CloudSim()
 
     val broker = DatacenterBrokerSimple(simulation)
@@ -58,9 +56,6 @@ object SaaSApplication:
 
     val dataCenter = dataCenterConfig.createDataCenter(simulation, hosts.toList, allocationPolicy, costPerSecond, costPerMem, costPerStorage, costPerBw)
     dataCenter.setSchedulingInterval(1)
-
-    
-
 
     //Creating broker
 
